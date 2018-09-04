@@ -1,45 +1,37 @@
-/*
-완전탐색이나 BFS로는 해결불가. DFS를 이용한 DP로 해결해야 함
-*/
-
-#include <iostream>
-#include <algorithm>
-
-#define MAX 502
+#include<iostream>
+#include<algorithm>
+#include<memory.h>
 using namespace std;
 
-int M, N;
-int maps[MAX][MAX];
-int visited[MAX][MAX];
-int chk_x[4] = {1, -1, 0, 0};
-int chk_y[4] = {0, 0, 1, -1};
+int n,m;
+int input[501][501];
+int dp[501][501]; //값 저장 메모장
+int a[4] = { 1, 0, -1, 0 };
+int b[4] = { 0, 1, 0, -1 };
 
 int dfs(int x, int y) {
-    if(x == 1 && y == 1) {
-        return 1;
+    if (dp[x][y] != -1) return dp[x][y]; //값이 이미 있는경우 또계산하지말고 있는값 리턴
+    if (x < 0 || x >= n || y < 0 || y >= m) return 0; //범위 벗어난 경우는 불가능하므로 0리턴
+    if (x == 0 && y == 0) return 1; //기저사례
+ 
+    dp[x][y] = 0;
+    for (int i = 0; i < 4; i++) {
+        int nextX = x + a[i];
+        int nextY = y + b[i]; //상하좌우 모두 이동가능하므로.
+        
+        if (input[nextX][nextY] > input[x][y])
+            dp[x][y] += dfs(nextX, nextY);
     }
-    if(visited[y][x]) {
-        return visited[x][y];
-    }
-    for(int i=0; i<4; i++) {
-        int tmp_x = x + chk_x[i];
-        int tmp_y = y + chk_y[i];
-        if (maps[tmp_x][tmp_y] > maps[x][y] && tmp_x > 0 && tmp_x <= N && tmp_y > 0 && tmp_y <= M){
-            visited[x][y] += dfs(tmp_x, tmp_y);
-        }
-    }
-    return visited[x][y];
+    return dp[x][y];
 }
-
+ 
 int main() {
-    //memset(maps, 0, sizeof(maps));
-
-    cin >> N >> M;
-    for(int i=1; i<=N; i++) {
-        for(int j=1; j<=M; j++) {
-            cin >> maps[M][N];
+    cin >> n >> m;
+    memset(dp, -1, sizeof(dp));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> input[i][j];
         }
     }
-    cout << dfs(N,M) << "\n";
-    
+    cout << dfs(n-1, m-1) << "\n";
 }
