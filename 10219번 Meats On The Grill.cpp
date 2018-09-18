@@ -17,7 +17,7 @@ int main() {
         }
 
         for(int i=0; i<H; i++) {
-            for(int j=0; j<W; j++) {
+            for(int j=W-1; j>=0; j--) {
                 cout << revGrill[i][j];
             }
             cout << "\n";

@@ -20,8 +20,7 @@ int main() {
             a /= gcdNum;
             b /= gcdNum; 
         }
-            cout << b << endl;
-
+        cout << b << endl;
     }
     return 0;
 }
